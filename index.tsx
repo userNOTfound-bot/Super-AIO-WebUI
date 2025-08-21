@@ -73,10 +73,24 @@ const DropdownIcon = ({ isOpen }: { isOpen: boolean }) => (
     <svg className={`dropdown-icon ${!isOpen ? 'collapsed' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
 );
 
+const HistoryIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 3v5h5" />
+        <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" />
+        <path d="M12 7v5l3 3" />
+    </svg>
+);
+
 const SettingsIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
 );
 
+const CloseIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+);
 
 const SunIcon = () => (
     <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -92,6 +106,55 @@ const ThemeToggle = ({ theme, onToggle }: { theme: string, onToggle: () => void 
     </button>
 );
 
+interface SettingsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  theme: string;
+  onThemeToggle: () => void;
+}
+
+const SettingsModal = ({ isOpen, onClose, theme, onThemeToggle }: SettingsModalProps) => {
+  if (!isOpen) return null;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Settings</h2>
+          <button className="modal-close-button" onClick={onClose} aria-label="Close settings">
+            <CloseIcon />
+          </button>
+        </div>
+        <div className="modal-body">
+          <nav className="modal-nav">
+            <a href="#" className="modal-nav-item active" onClick={(e) => e.preventDefault()}>General</a>
+          </nav>
+          <main className="modal-main">
+            <h3>General Settings</h3>
+            <div className="setting-item">
+              <div className="setting-item-label">
+                <h4>Theme</h4>
+                <p>Customize the look and feel of the application.</p>
+              </div>
+              <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface Message {
   sender: 'user' | 'model';
   content: string;
@@ -105,7 +168,9 @@ interface FileObject {
 
 const WelcomeScreen = ({ onGetStarted, theme, onThemeToggle }: { onGetStarted: () => void; theme: string; onThemeToggle: () => void; }) => (
     <div className="welcome-container">
-        <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+        <div className="welcome-theme-toggle-wrapper">
+            <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+        </div>
         <main className="welcome-content">
             <WelcomeRobotIcon />
             <h1 className="welcome-title">Welcome to Super AIO</h1>
@@ -132,6 +197,7 @@ const App = () => {
   const [activeMenuItem, setActiveMenuItem] = useState('Chat');
   const [isBasicOpen, setIsBasicOpen] = useState(true);
   const [isAdvanceOpen, setIsAdvanceOpen] = useState(true);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -262,6 +328,12 @@ const App = () => {
 
   return (
     <div className="app-container">
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        theme={theme}
+        onThemeToggle={handleThemeToggle}
+      />
       <aside className={`sidebar left-sidebar ${!isLeftSidebarOpen ? 'minimized' : ''}`}>
         <div className="sidebar-content">
             <div className="sidebar-main-content">
@@ -334,6 +406,10 @@ const App = () => {
         </div>
         <div className="sidebar-footer">
           <div className="sidebar-footer-item">
+            <HistoryIcon />
+            <span>History</span>
+          </div>
+          <div className="sidebar-footer-item" onClick={() => setIsSettingsModalOpen(true)}>
             <SettingsIcon />
             <span>Settings</span>
           </div>
