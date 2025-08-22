@@ -31,20 +31,6 @@ const MenuIcon = () => (
     <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
 );
 
-const WelcomeRobotIcon = () => (
-    <svg className="welcome-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 8V4H8v4Z"/>
-        <path d="M16 8V4h-4v4Z"/>
-        <path d="M12 18h.01"/>
-        <path d="M16 14h.01"/>
-        <path d="M8 14h.01"/>
-        <path d="M18 12h2"/>
-        <path d="M4 12h2"/>
-        <rect x="4" y="10" width="16" height="10" rx="2"/>
-        <path d="M7 10v-2a5 5 0 0 1 5-5v0a5 5 0 0 1 5 2v2"/>
-    </svg>
-);
-
 const AIPlatformIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8v4Z"/><path d="M16 8V4h-4v4Z"/><path d="M12 20h.01"/><path d="M16 16h.01"/><path d="M8 16h.01"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M6 12v-2a6 6 0 1 1 12 0v2"/></svg>
 );
@@ -98,6 +84,14 @@ const SunIcon = () => (
 
 const MoonIcon = () => (
     <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+);
+
+const GitHubIcon = () => (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+);
+
+const TwitterIcon = () => (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.223.085c.645 1.956 2.523 3.379 4.752 3.42a9.878 9.878 0 01-6.115 2.107c-.398 0-.79-.023-1.175-.068a13.963 13.963 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg>
 );
 
 const ThemeToggle = ({ theme, onToggle }: { theme: string, onToggle: () => void }) => (
@@ -166,21 +160,85 @@ interface FileObject {
   data: string; // base64 encoded string
 }
 
-const WelcomeScreen = ({ onGetStarted, theme, onThemeToggle }: { onGetStarted: () => void; theme: string; onThemeToggle: () => void; }) => (
-    <div className="welcome-container">
-        <div className="welcome-theme-toggle-wrapper">
-            <ThemeToggle theme={theme} onToggle={onThemeToggle} />
-        </div>
-        <main className="welcome-content">
-            <WelcomeRobotIcon />
-            <h1 className="welcome-title">Welcome to Super AIO</h1>
-            <p className="welcome-subtitle">
-                Your All-in-One AI Assistant. Chat, create, build, and learn with a powerful suite of AI tools at your fingertips.
-            </p>
-            <button className="welcome-button" onClick={onGetStarted}>
-                Get Started
-            </button>
+const Homepage = ({ onGetStarted, theme, onThemeToggle }: { onGetStarted: () => void; theme: string; onThemeToggle: () => void; }) => (
+    <div className="homepage-container">
+        <header className="homepage-header">
+            <div className="logo">
+                <AIPlatformIcon />
+                <span>AI Platform</span>
+            </div>
+            <nav className="homepage-nav">
+                <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+                <button className="btn btn-secondary" onClick={onGetStarted}>Launch App</button>
+            </nav>
+        </header>
+
+        <main className="homepage-main">
+            <section className="hero-section">
+                <h1 className="hero-title">Unleash the Power of AI</h1>
+                <p className="hero-subtitle">Your all-in-one platform for AI-powered chat, image generation, video creation, and more.</p>
+                <div className="hero-buttons">
+                    <button className="btn btn-primary" onClick={onGetStarted}>Get Started</button>
+                    <button className="btn btn-secondary">Learn More</button>
+                </div>
+            </section>
+
+            <section className="features-section">
+                <div className="feature-card">
+                    <h2>AI Chat</h2>
+                    <p>Engage in intelligent conversations with our advanced AI models.</p>
+                    <p>Ask questions, get creative ideas, or simply chat about anything.</p>
+                </div>
+                <div className="feature-card">
+                    <h2>Image Generation</h2>
+                    <p>Create stunning images from text descriptions.</p>
+                    <p>Generate unique artwork, realistic photos, and more with ease.</p>
+                </div>
+                <div className="feature-card">
+                    <h2>Video & Song Creation</h2>
+                    <p>Transform your ideas into captivating videos and original songs.</p>
+                    <p>Produce short clips, background music, and sound effects.</p>
+                </div>
+            </section>
+
+            <section className="contact-section">
+                <div className="contact-content">
+                    <h2>Get in Touch</h2>
+                    <p>Have questions or feedback? Reach out to us!</p>
+                </div>
+                <div className="contact-form-container">
+                    <h3>Contact Us</h3>
+                    <p>Send us a message and we'll get back to you.</p>
+                    <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+                        <div className="form-group">
+                            <label htmlFor="name">Name</label>
+                            <input type="text" id="name" placeholder="Your Name" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input type="email" id="email" placeholder="your@example.com" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="message">Message</label>
+                            <textarea id="message" rows={5} placeholder="Your message..."></textarea>
+                        </div>
+                        <button type="submit" className="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </section>
         </main>
+
+        <footer className="homepage-footer">
+            <div className="footer-content">
+                <p>&copy; 2023 AI Platform. All rights reserved.</p>
+                <div className="footer-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy</a>
+                    <a href="#" aria-label="GitHub"><GitHubIcon /></a>
+                    <a href="#" aria-label="Twitter"><TwitterIcon /></a>
+                </div>
+            </div>
+        </footer>
     </div>
 );
 
@@ -323,7 +381,7 @@ const App = () => {
   };
   
   if (!hasStarted) {
-    return <WelcomeScreen onGetStarted={() => setHasStarted(true)} theme={theme} onThemeToggle={handleThemeToggle} />;
+    return <Homepage onGetStarted={() => setHasStarted(true)} theme={theme} onThemeToggle={handleThemeToggle} />;
   }
 
   return (
